@@ -20,6 +20,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/services/auth.service'
+import { setSession } from '@/services/session.service'
 
 const router = useRouter()
 
@@ -45,6 +46,7 @@ const validate = () => {
 }
 
 const handleSubmit = async () => {
+  error.value = null
   loading.value = true
 
   if (!validate()) {
@@ -58,6 +60,9 @@ const handleSubmit = async () => {
     loading.value = false
     return
   }
+
+  setSession(user.token)
+  loading.value = false
 
   router.push({ name: 'Dashboard' })
 }
